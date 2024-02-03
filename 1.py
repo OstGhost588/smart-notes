@@ -60,6 +60,8 @@ window_small.addItems(notes)
 def vmist_note():
     name = window_small.selectedItems()[0].text()
     WINDOW_BIG.setText(notes[name]["вміст"])
+    window_small2.clear()
+    window_small2.addItems(notes[name]["теги"])
 
 window_small.itemClicked.connect(vmist_note)
 def change_note():
@@ -73,7 +75,35 @@ def add_notes():
             "вміст":"",
             "теги": []
         }
+        window_small.clear()
+        window_small.addItems(notes)
         write_data()
+def delete_notes():
+    name = window_small.selectedItems()[0].text()
+    notes.pop(name)
+    window_small.clear()
+    window_small.addItems(notes)
+    write_data()
+
+def add_tag():
+    name = window_small.selectedItems()[0].text()
+    tag = search_teg.text()
+    notes[name]["теги"].append(tag)
+    window_small2.clear()
+    window_small2.addItems(notes[name]["теги"])
+    write_data()
+
+def delete_tag():
+    name_note = window_small.selectedItems()[0].text()
+    name_tag = window_small2.selectedItems()[0].text()
+    notes[name_note]["теги"].remove(name_tag)
+    
+
+    write_data()
+
+unfasten_notes.clicked.connect(delete_tag)
+add_to_notes.clicked.connect(add_tag)
+delete_notes_btn.clicked.connect(delete_notes)
 save_notes_btn.clicked.connect(change_note)
 make_notes_btn.clicked.connect(add_notes)
 window.show()
